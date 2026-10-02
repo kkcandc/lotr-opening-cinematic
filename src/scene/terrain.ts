@@ -104,7 +104,7 @@ export function createTerrain(): THREE.Mesh {
         float diff = max(ndl, 0.0);
         vec3 sunCol = vec3(1.05, 0.78, 0.52);
         vec3 skyCol = vec3(0.50, 0.58, 0.72);
-        vec3 col = albedo * (sunCol * (diff * 1.35 + 0.08) + skyCol * (0.18 + 0.22 * max(n.y, 0.0)));
+        vec3 col = albedo * (sunCol * (diff * 1.45) + skyCol * (0.05 + 0.08 * max(n.y, 0.0)));
         float grazing = pow(max(ndl, 0.0), 8.0);
         col += vec3(1.0, 0.72, 0.38) * grazing * (0.18 + snowLine * 0.45);
         vec3 viewDir = normalize(cameraPosition - vWorld);

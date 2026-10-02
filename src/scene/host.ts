@@ -33,7 +33,7 @@ export function placeSoldiers(): Soldier[] {
   for (const side of [-1, 1]) {
     for (let r = 0; r < 112; r++) {
       for (let c = 0; c < 17; c++) {
-        const z = 48 + r * 2.55 + rand() * 0.85;
+        const z = 36 + r * 2.35 + rand() * 0.7;
         const cx = valleyCenterX(z);
         const x = cx + side * (8.4 + c * 2.32) + (rand() - 0.5) * 0.65;
         const y = sampleHeight(x, z);
@@ -44,7 +44,7 @@ export function placeSoldiers(): Soldier[] {
           z,
           yaw: marchYaw(z) + (rand() - 0.5) * 0.14,
           host: 0,
-          scale: 0.88 + rand() * 0.36,
+          scale: 1.05 + rand() * 0.45,
           seed: rand(),
         });
       }

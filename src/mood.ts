@@ -72,7 +72,7 @@ export const cards: Card[] = [
     body: 'They marched for no throne. Only for the dark after the last flame.',
   },
   {
-    t0: 72.4,
+    t0: 74.6,
     t1: 400,
     place: 'center',
     kicker: 'The war for the last dawn',

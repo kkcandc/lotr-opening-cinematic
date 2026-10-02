@@ -31,19 +31,24 @@ const GodrayShader = {
     varying vec2 vUv;
     void main() {
       vec3 base = texture2D(tDiffuse, vUv).rgb;
-      vec2 delta = (uSun - vUv) / 22.0;
-      vec2 coord = vUv;
-      float illum = 0.55;
-      vec3 rays = vec3(0.0);
-      for (int i = 0; i < 22; i++) {
-        coord += delta;
-        vec3 s = texture2D(tDiffuse, coord).rgb;
-        float bright = max(max(s.r, s.g), s.b) - 0.72;
-        bright = max(bright, 0.0);
-        rays += s * bright * illum;
-        illum *= 0.95;
+      vec3 col = base;
+      if (uStrength > 0.001) {
+        vec2 delta = (uSun - vUv) / 18.0;
+        vec2 coord = vUv;
+        float illum = 0.4;
+        vec3 rays = vec3(0.0);
+        for (int i = 0; i < 18; i++) {
+          coord += delta;
+          vec3 s = texture2D(tDiffuse, coord).rgb;
+          float bright = max(max(s.r, s.g), s.b) - 0.82;
+          bright = max(bright, 0.0);
+          rays += s * bright * illum;
+          illum *= 0.94;
+        }
+        float lum = max(base.r, max(base.g, base.b));
+        float mask = smoothstep(0.45, 1.15, lum);
+        col += rays * uStrength * mask;
       }
-      vec3 col = base + rays * uStrength;
       vec2 p = (vUv - 0.5) * vec2(1.2, 1.05);
       float vig = smoothstep(1.08, 0.28, length(p));
       col *= mix(0.58, 1.0, vig);
@@ -65,7 +70,7 @@ export type Grade = {
 export function createGrade(renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera): Grade {
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.38, 0.68, 0.84);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.16, 0.42, 0.98);
   composer.addPass(bloom);
   const godray = new ShaderPass(GodrayShader);
   composer.addPass(godray);

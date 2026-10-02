@@ -110,10 +110,14 @@ export function createForge(): THREE.Group {
     group.add(horn);
   }
 
-  const mouth = new THREE.Mesh(new THREE.SphereGeometry(5.2, 10, 8), ember);
-  mouth.scale.set(1.15, 0.72, 0.55);
-  mouth.position.set(0, 8.5, -20);
+  const mouth = new THREE.Mesh(new THREE.BoxGeometry(16, 3.4, 2.4), ember);
+  mouth.position.set(0, 7.4, -23);
   group.add(mouth);
+  for (const x of [-9.5, 9.5]) {
+    const vent = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.6, 1.4), ember);
+    vent.position.set(x, 6.2, -21);
+    group.add(vent);
+  }
 
   const crack = new THREE.Mesh(new THREE.BoxGeometry(0.55, 22, 0.45), cold);
   crack.position.set(1.1, 33, -8.6);

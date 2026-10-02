@@ -94,9 +94,9 @@ function buildKeys(): Key[] {
   const watchY = sampleHeight(WATCH.x, WATCH.z);
   const forgeY = sampleHeight(FORGE.x, FORGE.z);
   return [
-    { t: 0, pos: [190, 162, -370], look: [-20, 96, -150], fov: 37, roll: 0.02, clear: 18 },
-    { t: 6.4, pos: [148, 154, -318], look: [-90, 88, -96], fov: 39, roll: 0.04, clear: 18 },
-    { t: 10.4, pos: [-20, 132, -210], look: [-180, 76, -48], fov: 47, roll: -0.055, clear: 20 },
+    { t: 0, pos: [120, 150, -300], look: [-40, 80, -140], fov: 36, roll: 0.02, clear: 16 },
+    { t: 6.4, pos: [48, 0, -210], look: [-110, 36, -70], fov: 42, roll: 0.03, clear: 22 },
+    { t: 10.6, pos: [-70, 0, -130], look: [-210, 28, -16], fov: 48, roll: -0.06, clear: 14 },
     {
       t: 15.4,
       pos: [WATCH.x + 58, watchY + 14, WATCH.z - 34],
@@ -152,9 +152,9 @@ function scriptVeil(time: number): number {
     const u = (time - 6.4) / 1.2;
     return 1 - u * u;
   }
-  if (time < 72.2) return 0;
-  if (time < 77.4) {
-    const u = (time - 72.2) / 5.2;
+  if (time < 74.8) return 0;
+  if (time < 77.6) {
+    const u = (time - 74.8) / 2.8;
     return u * u;
   }
   return 1;
@@ -205,15 +205,15 @@ function applyMood(time: number): void {
   const dusk = smoothstep(56, 72, time);
   live.horizon.value.copy(horizonDawn).lerp(horizonDusk, dusk);
   live.zenith.value.copy(zenithDawn).lerp(zenithDusk, dusk);
-  const sunMix = smoothstep(10, 52, time);
+  const sunMix = smoothstep(36, 74, time);
   live.sunDir.value.copy(sunEarly).lerp(sunLate, sunMix).normalize();
-  const valleyFog = lerp(0.0025, 0.0054, smoothstep(18, 34, time));
-  live.fogDensity.value = lerp(valleyFog, 0.0074, smoothstep(54, 68, time));
+  const valleyFog = lerp(0.0018, 0.0031, smoothstep(18, 36, time));
+  live.fogDensity.value = lerp(valleyFog, 0.0046, smoothstep(58, 70, time));
   live.dust.value = smoothstep(36, 50, time) * (1 - smoothstep(66, 75, time) * 0.35);
   live.shaft.value = smoothstep(7.2, 11.5, time) * (1 - smoothstep(57, 70, time));
   const reveal = smoothstep(6.5, 7.8, time);
   const flash = Math.exp(-((time - 7.25) * (time - 7.25)) / 0.14);
-  live.exposure = (0.58 + reveal * 0.48 + flash * 0.42) * (1 - dusk * 0.22);
+  live.exposure = (0.52 + reveal * 0.36 + flash * 0.22) * (1 - dusk * 0.12);
   live.time.value = time;
 }
 
@@ -341,7 +341,7 @@ function boot(): void {
     const clear = sampleNum(keys, time, 'clear');
     const ground = sampleHeight(pos[0], pos[2]);
     if (pos[1] < ground + clear) pos[1] = ground + clear;
-    if (time > 43.6 && time < 49.2) look[1] = pos[1] + 6.4;
+    if (time > 43.6 && time < 49.2) look[1] = pos[1] + 2.4;
 
     const shake = reduceMotion || time < 7.4 ? 0 : time > 44 && time < 52 ? 0.16 : 0.045;
     pos[0] += Math.sin(time * 1.7) * shake;
@@ -362,7 +362,7 @@ function boot(): void {
     sunPoint.project(camera);
     grade.sun.set((sunPoint.x * 0.5 + 0.5), (sunPoint.y * 0.5 + 0.5));
     const sunVisible = sunPoint.z < 1 && grade.sun.x > -0.15 && grade.sun.x < 1.15 && grade.sun.y > -0.15 && grade.sun.y < 1.15;
-    grade.strength.value = sunVisible ? 0.32 : 0;
+    grade.strength.value = sunVisible ? 0.22 : 0;
 
     if (!document.hidden) grade.composer.render();
 
